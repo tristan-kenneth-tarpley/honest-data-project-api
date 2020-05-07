@@ -4,7 +4,8 @@
   "description": "Just seeing if this is viable",
   "main": "app.js",
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "start": "node app.js"
   },
   "author": "Tristan Tarpley",
   "license": "ISC",
