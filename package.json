@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm test",
     "start": "node dist/app.js",
-    "build": "tsc && node dist/app.js"
+    "build": "tsc"
   },
   "author": "Tristan Tarpley",
   "license": "ISC",
