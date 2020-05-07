@@ -2,14 +2,19 @@
   "name": "honest-data-project",
   "version": "1.0.0",
   "description": "Just seeing if this is viable",
-  "main": "app.js",
+  "main": "dist/app.js",
   "scripts": {
     "test": "npm test",
-    "start": "node app.js"
+    "start": "tsc && node dist/app.js"
   },
   "author": "Tristan Tarpley",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.6",
+    "tslint": "^6.1.2",
+    "typescript": "^3.8.3"
   }
 }
