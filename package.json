@@ -6,15 +6,19 @@
   "scripts": {
     "test": "npm test",
     "start": "tsc && node dist/app.js",
+    "start-dev": "nodemon --exec npm start",
     "build": "tsc"
   },
   "author": "Tristan Tarpley",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.6",
+    "nodemon": "^2.0.3",
+    "npm-watch": "^0.6.0",
     "tslint": "^6.1.2",
     "typescript": "^3.8.3"
   }
