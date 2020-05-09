@@ -37,8 +37,7 @@ interface covidRecords {
 }
 
 export const description: string = `The COVID Tracking Project is a volunteer organization launched from The Atlantic and dedicated to collecting and publishing the data required to understand the COVID-19 outbreak in the United States.`
-
-export const source: string = `https://covidtracking.com, a project by The Atlantic.`
+export const source: string = `https://covidtracking.com`
 
 export class covidAPI extends honestAPI {
     base_url: string

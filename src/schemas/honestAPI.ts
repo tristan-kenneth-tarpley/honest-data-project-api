@@ -8,7 +8,7 @@ export default class honestAPI {
         const res = await fetch(url)
         const json = await res.json()
         const mapped = mapToSchema(json)
-        mapped['viewTypes'] = JSON.stringify(viewTypes)
+        mapped['viewTypes'] = viewTypes
 
         return mapped
     }
