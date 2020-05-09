@@ -1,5 +1,6 @@
 import express from 'express'
-import clients from './clients'
+import clients from './apiClients'
+import apiClients from './apiClients'
 
 export const cors = require('cors')
 export const app = express()
@@ -40,7 +41,7 @@ app.get('/status', cors(corsOptions), (req, res) => {
 
 app.get('/src/covid', cors(corsOptions), async (req, res) => {
     try {
-        const covid = new clients.covidAPI()
+        const covid = new clients.covidAPI.api()
         const _res = await covid.currentStateData()
         res.json(_res)
     } catch(e) {

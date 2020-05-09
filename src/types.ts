@@ -1,6 +1,5 @@
 export type datetimeField = Date
-export type timeBased = boolean
-export type snapshotBased = boolean
+export type uid = string
 
 export enum charts {
     bar, pie, mekko,
@@ -9,11 +8,8 @@ export enum charts {
     area, stacked
 }
 
-export interface record {
-    date?: datetimeField
-    key?: string
-    value?: number | string
-    filterable: boolean
+export enum viewTypes {
+    timeBased, snapshotBased
 }
 
 export interface routePacket {
@@ -22,10 +18,17 @@ export interface routePacket {
     options: Array<string | number>
 }
 
+
+export type recordFields = datetimeField | string | number | boolean | uid
+export interface record {
+    [key: string]: recordFields
+}
+
 export interface APIResponse {
-    viewType: timeBased | snapshotBased
+    viewType: viewTypes // see viewTypes enum
+    source: string
     records: Array<record>
     description: string
     routes?: Array<routePacket>
-    acceptableCharts: Array<number>
+    acceptableCharts?: Array<number>
 }
