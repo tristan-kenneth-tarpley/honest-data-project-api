@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm test",
     "start": "tsc && node dist/app.js",
-    "start-dev": "nodemon --exec npm start",
+    "dev": "nodemon --exec npm start",
     "build": "tsc"
   },
   "author": "Tristan Tarpley",
