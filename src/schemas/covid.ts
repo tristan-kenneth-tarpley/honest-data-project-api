@@ -78,7 +78,7 @@ export class covidAPI extends honestAPI {
                     onVentilatorCurrently: d.onVentilatorCurrently,
                     onVentilatorCumulative: d.onVentilatorCumulative,
                     recovered: d.recovered,
-                    lastUpdateEt: d.lastUpdateEt,
+                    date: d.lastUpdateEt,
                     checkTimeEt: d.checkTimeEt,
                     death: d.death,
                     hospitalized: d.hospitalized,
