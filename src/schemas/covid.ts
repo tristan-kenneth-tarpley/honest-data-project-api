@@ -53,6 +53,7 @@ export class covidAPI extends honestAPI {
 
     mapToSchema(data: any) {
         const returned: APIResponse = {
+            title: "COVID-19",
             viewType: viewTypes.timeBased,
             description,
             source,

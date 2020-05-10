@@ -25,6 +25,7 @@ export interface record {
 }
 
 export interface APIResponse {
+    title: string
     viewType: viewTypes // see viewTypes enum
     source: string
     records: Array<record>
