@@ -61,12 +61,12 @@ export class covidAPI extends honestAPI {
                 return {
                     state: d.state,
                     positive: d.positive,
-                    positiveScore: d.positiveScore,
-                    negativeScore: d.negativeScore,
-                    negativeRegularScore: d.negativeRegularScore,
-                    commercialScore: d.commercialScore,
+                    positiveScore: "flag",
+                    negativeScore: "flag",
+                    negativeRegularScore: "flag",
+                    commercialScore: "flag",
                     grade: "flag", // dep
-                    score: d.score,
+                    score: "flag",
                     notes: "internal",
                     dataQualityGrade: d.dataQualityGrade,
                     negative: d.negative,
@@ -84,8 +84,8 @@ export class covidAPI extends honestAPI {
                     hospitalized: d.hospitalized,
                     total: "flag", // dep
                     totalTestResults: d.totalTestResults,
-                    posNeg: d.posNeg,
-                    fips: d.fips,
+                    posNeg: "flag",
+                    fips: "internal",
                     dateModified: d.dateModified,
                     dateChecked: d.dateChecked,
                     uid: d.hash
