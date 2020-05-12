@@ -1,27 +1,13 @@
 export type datetimeField = Date
 export type uid = string
 
-export enum charts {
-    bar, pie, mekko,
-    scatterPlot, waterfall, line,
-    dualAxisLine, bullet, bubbleChart,
-    area, stacked
+export type recordFields = datetimeField | string | number | boolean | uid
+export interface record {
+    [key: string]: recordFields
 }
 
 export enum viewTypes {
     timeBased, snapshotBased
-}
-
-export interface routePacket {
-    endpoint: URL
-    marketName: string
-    options: Array<string | number>
-}
-
-
-export type recordFields = datetimeField | string | number | boolean | uid
-export interface record {
-    [key: string]: recordFields
 }
 
 export interface APIResponse {
@@ -30,6 +16,21 @@ export interface APIResponse {
     source: string
     records: Array<record>
     description: string
-    routes?: Array<routePacket>
     acceptableCharts?: Array<number>
+}
+
+
+
+export enum charts {
+    bar, pie, treeMap,
+    scatterPlot, waterfall, line,
+    dualAxisLine, bullet, bubbleChart,
+    area, stacked
+}
+export enum dataTypes {
+    location, score, dateTime, metricLowIsGood, metricLowIsBad
+}
+export interface APIField {
+    dataType: dataTypes
+    value: string | number | null | undefined
 }

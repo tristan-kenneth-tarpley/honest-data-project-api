@@ -1,14 +1,14 @@
 import fetch from 'node-fetch'
-import {APIResponse, viewTypes} from '../types'
+import {APIResponse, viewTypes, charts, dataTypes} from '../types'
 
 export default class honestAPI {
-    constructor(){}
-
     async send(url: string, mapToSchema: ((data: any) => APIResponse)) {
         const res = await fetch(url)
         const json = await res.json()
         const mapped = mapToSchema(json)
         mapped['viewTypes'] = viewTypes
+        mapped['charts'] = charts
+        mapped['dataTypes'] = dataTypes
 
         return mapped
     }

@@ -1,38 +1,30 @@
-
-import fetch from 'node-fetch'
-import {APIResponse, datetimeField, uid, viewTypes} from '../types'
+import {APIResponse, uid, viewTypes, APIField, dataTypes} from '../types'
 import honestAPI from './honestAPI'
 
 interface covidRecords {
-    state: string,
-    positive: number,
-    positiveScore: number,
-    negativeScore: number,
-    negativeRegularScore: number,
-    commercialScore: number,
-    grade: never, // will be deprecated
-    score: number,
-    notes: string,
-    dataQualityGrade: string, // use this one
-    negative: number,
-    pending: number | null,
-    hospitalizedCurrently: number | null,
-    hospitalizedCumulative: number | null,
-    inIcuCurrently: number | null,
-    inIcuCumulative: number | null,
-    onVentilatorCurrently: number | null,
-    onVentilatorCumulative: number | null,
-    recovered: number | null,
-    lastUpdateEt: datetimeField,
-    checkTimeEt: datetimeField,
-    death: number | null,
-    hospitalized: number | null,
-    total: number | null, // will be deprecated
-    totalTestResults: number | null, // use this one
-    posNeg: number | null,
-    fips: string,
-    dateModified: datetimeField,
-    dateChecked: datetimeField,
+    state: APIField
+    positive: APIField
+    score: APIField
+    notes: APIField
+    dataQualityGrade: APIField
+    negative: APIField
+    pending: APIField
+    hospitalizedCurrently: APIField
+    hospitalizedCumulative: APIField
+    inIcuCurrently: APIField
+    inIcuCumulative: APIField
+    onVentilatorCurrently: APIField
+    onVentilatorCumulative: APIField
+    recovered: APIField
+    lastUpdateEt: APIField
+    checkTimeEt: APIField
+    death: APIField
+    hospitalized: APIField
+    totalTestResults: APIField
+    posNeg: APIField
+    fips: APIField
+    dateModified: APIField
+    dateChecked: APIField
     hash: uid
 }
 
@@ -59,35 +51,82 @@ export class covidAPI extends honestAPI {
             source,
             records: data.map((d: covidRecords) => {
                 return {
-                    state: d.state,
-                    positive: d.positive,
-                    positiveScore: "flag",
-                    negativeScore: "flag",
-                    negativeRegularScore: "flag",
-                    commercialScore: "flag",
-                    grade: "flag", // dep
-                    score: "flag",
-                    notes: "internal",
-                    dataQualityGrade: d.dataQualityGrade,
-                    negative: d.negative,
-                    pending: d.pending,
-                    hospitalizedCurrently: d.hospitalizedCurrently,
-                    hospitalizedCumulative: d.hospitalizedCumulative,
-                    inIcuCurrently: d.inIcuCurrently,
-                    inIcuCumulative: d.inIcuCumulative,
-                    onVentilatorCurrently: d.onVentilatorCurrently,
-                    onVentilatorCumulative: d.onVentilatorCumulative,
-                    recovered: d.recovered,
-                    date: d.lastUpdateEt,
-                    checkTimeEt: d.checkTimeEt,
-                    death: d.death,
-                    hospitalized: d.hospitalized,
-                    total: "flag", // dep
-                    totalTestResults: d.totalTestResults,
-                    posNeg: "flag",
-                    fips: "internal",
-                    dateModified: d.dateModified,
-                    dateChecked: d.dateChecked,
+                    state: {
+                        dataType: dataTypes.location,
+                        value: d.state
+                    },
+                    positive: {
+                        viewType: viewTypes.timeBased,
+                        value: d.positive
+                    },
+                    dataQualityGrade: {
+                        dataType: dataTypes.location,
+                        value: d.dataQualityGrade
+                    },
+                    negative: {
+                        dataType: dataTypes.location,
+                        value: d.negative
+                    },
+                    pending: {
+                        dataType: dataTypes.location,
+                        value: d.pending
+                    },
+                    hospitalizedCurrently: {
+                        dataType: dataTypes.location,
+                        value: d.hospitalizedCurrently
+                    },
+                    hospitalizedCumulative: {
+                        dataType: dataTypes.location,
+                        value: d.hospitalizedCumulative
+                    },
+                    inIcuCurrently: {
+                        dataType: dataTypes.location,
+                        value: d.inIcuCurrently
+                    },
+                    inIcuCumulative: {
+                        dataType: dataTypes.location,
+                        value: d.inIcuCumulative
+                    },
+                    onVentilatorCurrently: {
+                        dataType: dataTypes.location,
+                        value: d.onVentilatorCurrently
+                    },
+                    onVentilatorCumulative: {
+                        dataType: dataTypes.location,
+                        value: d.onVentilatorCumulative
+                    },
+                    recovered: {
+                        dataType: dataTypes.location,
+                        value: d.recovered
+                    },
+                    dateLastUpdated: {
+                        dataType: dataTypes.location,
+                        value: d.lastUpdateEt
+                    },
+                    dateLastChecked: {
+                        dataType: dataTypes.location,
+                        value: d.checkTimeEt
+                    },
+                    death: {
+                        dataType: dataTypes.location,
+                        value: d.death
+                    },
+                    hospitalized: {
+                        dataType: dataTypes.location,
+                        value: d.hospitalized
+                    },
+                    totalTestResults: {
+                        dataType: dataTypes.location,
+                        value: d.totalTestResults
+                    },
+                    dateModified: {
+                        dataType: dataTypes.location,
+                        value: d.dateModified
+                    },
+                    dateChecked: {
+                        dataType: dataTypes.location,
+                        value: d.dateChecked
+                    },
                     uid: d.hash
                 }
             })
