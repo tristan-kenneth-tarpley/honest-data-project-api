@@ -1,5 +1,6 @@
 import {APIResponse, uid, viewTypes, APIField, dataTypes} from '../types'
 import honestAPI from './honestAPI'
+import {endpointsKeys} from '../types'
 
 interface covidRecords {
     state: APIField
@@ -36,21 +37,28 @@ export class covidAPI extends honestAPI {
     version: string
     file_type: string
     endpoints: any
-    endpointsKeys: Array<string>
+    endpointsKeys: Array<endpointsKeys>
     activeEndpoint: string
+    src: string
 
     constructor() {
         super()
         this.version = 'v1'
         this.base_url = `https://covidtracking.com/api/${this.version}/`
         this.file_type = '.json'
+        this.src = 'covid'
         this.endpoints = {
             currentStateData: this.currentStateData,
             historicStateData: this.historicStateData,
             currentUSData: this.currentUSData,
             historicUSData: this.historicUSData,
         }
-        this.endpointsKeys = Object.keys(this.endpoints)
+        this.endpointsKeys = Object.keys(this.endpoints).map(key=>{
+            return {
+                key,
+                active: false
+            }
+        })
     }
 
     mapToSchema(data: any) {

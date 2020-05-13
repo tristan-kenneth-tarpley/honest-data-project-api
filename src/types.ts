@@ -11,7 +11,7 @@ export enum viewTypes {
 }
 
 export interface APIResponse {
-    endpoints?: Array<string>
+    endpoints?: Array<endpointsKeys>
     title: string
     viewType: viewTypes // see viewTypes enum
     source: string
@@ -34,4 +34,10 @@ export enum dataTypes {
 export interface APIField {
     dataType: dataTypes
     value: string | number | null | undefined
+}
+
+
+export interface endpointsKeys {
+    key: string,
+    active: boolean
 }

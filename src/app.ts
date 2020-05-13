@@ -43,7 +43,7 @@ app.get('/status', cors(corsOptions), (req, res) => {
 app.get('/src/:src', cors(corsOptions), async (req, res) => {
     try {
         const api = new clients[req.params.src].api()
-        const _res = await api.router(api.endpointsKeys[0])
+        const _res = await api.router(api.endpointsKeys[0].key)
         res.json(_res)
     } catch(e) {
         console.log(e)

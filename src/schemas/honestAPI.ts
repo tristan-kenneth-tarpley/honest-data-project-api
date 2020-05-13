@@ -1,10 +1,12 @@
 import fetch from 'node-fetch'
 import {APIResponse, viewTypes, charts, dataTypes} from '../types'
+import {endpointsKeys} from '../types'
 
 export default class honestAPI {
     endpoints: any
-    endpointsKeys: Array<string> // the first endpoint will always be the default
+    endpointsKeys: Array<endpointsKeys> // the first endpoint will always be the default
     activeEndpoint: string
+    src: string
 
     async router(route: string) {
         try {
@@ -29,8 +31,13 @@ export default class honestAPI {
         mapped['viewTypes'] = viewTypes
         mapped['charts'] = charts
         mapped['dataTypes'] = dataTypes
-        console.log(this.activeEndpoint)
-        mapped['endpoints'] = this.endpointsKeys.filter(endpoint => endpoint !== this.activeEndpoint)
+        mapped['src'] = this.src
+        mapped['endpoints'] = this.endpointsKeys.map(key=>{
+            return {
+                key: key.key,
+                active: key.key === this.activeEndpoint ? true : false
+            }
+        })
 
         return mapped
     }
