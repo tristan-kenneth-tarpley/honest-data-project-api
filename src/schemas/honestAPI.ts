@@ -2,6 +2,26 @@ import fetch from 'node-fetch'
 import {APIResponse, viewTypes, charts, dataTypes} from '../types'
 
 export default class honestAPI {
+    endpoints: any
+    endpointsKeys: Array<string> // the first endpoint will always be the default
+    activeEndpoint: string
+
+    async router(route: string) {
+        try {
+            const endpoints = this.endpoints // getting endpoints of the class that was instantiated
+            const method = endpoints[route].bind(this) // binding the key/value pairs to instance
+            const res = await method() // fetching the data
+            return res 
+        } catch (e) {
+            console.log(e)
+            return {
+                res: "error",
+                message: "Endpoint not found",
+                status: 404
+            }
+        }
+    }
+
     async send(url: string, mapToSchema: ((data: any) => APIResponse)) {
         const res = await fetch(url)
         const json = await res.json()
@@ -9,6 +29,8 @@ export default class honestAPI {
         mapped['viewTypes'] = viewTypes
         mapped['charts'] = charts
         mapped['dataTypes'] = dataTypes
+        console.log(this.activeEndpoint)
+        mapped['endpoints'] = this.endpointsKeys.filter(endpoint => endpoint !== this.activeEndpoint)
 
         return mapped
     }

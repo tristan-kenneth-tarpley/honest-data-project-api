@@ -11,6 +11,7 @@ export enum viewTypes {
 }
 
 export interface APIResponse {
+    endpoints?: Array<string>
     title: string
     viewType: viewTypes // see viewTypes enum
     source: string

@@ -1,7 +1,7 @@
 import * as covid from './schemas/covid'
 
 export default {
-    covidAPI: {
+    covid: {
         api: covid.covidAPI,
         name: "USA COVID-19 data",
         description: covid.description,

@@ -39,10 +39,33 @@ app.get('/status', cors(corsOptions), (req, res) => {
     })
 })
 
-app.get('/src/covid', cors(corsOptions), async (req, res) => {
+
+app.get('/src/:src', cors(corsOptions), async (req, res) => {
     try {
-        const covid = new clients.covidAPI.api()
-        const _res = await covid.currentStateData()
+        const api = new clients[req.params.src].api()
+        const _res = await api.router(api.endpointsKeys[0])
+        res.json(_res)
+    } catch(e) {
+        console.log(e)
+        if (e instanceof TypeError) {
+            res.status(404).json({
+                response: 404,
+                errorMessage: "Data source not found"
+            })
+        } else {
+            res.status(500).json({
+                response: 500,
+                errorMessage
+            })
+        }
+    }
+})
+
+
+app.get('/src/:src/:endpoint', cors(corsOptions), async (req, res) => {
+    try {
+        const covid = new clients[req.params.src].api()
+        const _res = await covid.router(req.params.endpoint)
         res.json(_res)
     } catch(e) {
         console.log(e)

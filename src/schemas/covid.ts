@@ -35,12 +35,22 @@ export class covidAPI extends honestAPI {
     base_url: string
     version: string
     file_type: string
+    endpoints: any
+    endpointsKeys: Array<string>
+    activeEndpoint: string
 
     constructor() {
         super()
         this.version = 'v1'
         this.base_url = `https://covidtracking.com/api/${this.version}/`
         this.file_type = '.json'
+        this.endpoints = {
+            currentStateData: this.currentStateData,
+            historicStateData: this.historicStateData,
+            currentUSData: this.currentUSData,
+            historicUSData: this.historicUSData,
+        }
+        this.endpointsKeys = Object.keys(this.endpoints)
     }
 
     mapToSchema(data: any) {
@@ -135,32 +145,43 @@ export class covidAPI extends honestAPI {
         return returned 
     }
 
-    formUrl(endpoint: string){
+    buildURL(endpoint: string, __endpoint: string){
+        this.activeEndpoint = __endpoint // basically caching this call so the frontend can know which endpoint is active
         return (this.base_url + endpoint + this.file_type)
     }
 
-    async pack(endpoint: string){
-        const res = await this.send(this.formUrl(endpoint), this.mapToSchema)
-        return res
-    }
-
     async currentStateData(){
-        const res = await this.pack('states/current')
+        const res = await this.send(
+            this.buildURL('states/current', 'currentStateData'), 
+            this.mapToSchema
+        )
         return res
     }
 
     async historicStateData(){
-        const res = await this.pack('states/daily')
+        this.activeEndpoint = 'historicStateData'
+        const res = await this.send(
+            this.buildURL('states/daily', 'historicStateData'),
+            this.mapToSchema
+        )
         return res
     }
 
     async currentUSData(){
-        const res = await this.pack('us/current')
+        this.activeEndpoint = 'currentUSData'
+        const res = await this.send(
+            this.buildURL('us/current', 'currentUSData'),
+            this.mapToSchema
+        )
         return res
     }
 
     async historicUSData(){
-        const res = await this.pack('us/daily')
+        this.activeEndpoint = 'historicUSData'
+        const res = await this.send(
+            this.buildURL('us/daily', 'historicUSData'),
+            this.mapToSchema
+        )
         return res
     }
 
