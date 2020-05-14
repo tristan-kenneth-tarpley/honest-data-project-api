@@ -141,7 +141,7 @@ export class covidAPI extends honestAPI {
                         dataType: dataTypes.location,
                         value: d.dateModified
                     },
-                    dateChecked: {
+                    date: {
                         dataType: dataTypes.location,
                         value: d.dateChecked
                     },
