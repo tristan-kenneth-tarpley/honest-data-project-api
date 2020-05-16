@@ -1,19 +1,18 @@
 import fetch from 'node-fetch'
-import {APIResponse, viewTypes, charts, dataTypes} from '../types'
-import {endpointsKeys} from '../types'
+import {endpointsKeys, APIResponse, viewTypes, dataTypes} from '../types'
 
 export default class honestAPI {
-    endpoints: any
-    endpointsKeys: Array<endpointsKeys> // the first endpoint will always be the default
-    activeEndpoint: string
-    src: string
+    protected readonly endpoints: any
+    protected activeEndpoint: string
+    readonly endpointsKeys: Array<endpointsKeys> // the first endpoint will always be the default
+    readonly src: string
 
     async router(route: string) {
         try {
             const endpoints = this.endpoints // getting endpoints of the class that was instantiated
             const method = endpoints[route].bind(this) // binding the key/value pairs to instance
             const res = await method() // fetching the data
-            return res 
+            return res
         } catch (e) {
             console.log(e)
             return {
@@ -24,12 +23,12 @@ export default class honestAPI {
         }
     }
 
-    async send(url: string, mapToSchema: ((data: any) => APIResponse)) {
+    async send(url: string, mapToSchema: ((data: any) => APIResponse), viewType: viewTypes) {
         const res = await fetch(url)
         const json = await res.json()
         const mapped = mapToSchema(json)
+        mapped['viewType'] = viewType
         mapped['viewTypes'] = viewTypes
-        mapped['charts'] = charts
         mapped['dataTypes'] = dataTypes
         mapped['src'] = this.src
         mapped['endpoints'] = this.endpointsKeys.map(key=>{

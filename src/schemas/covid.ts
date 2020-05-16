@@ -1,5 +1,5 @@
-import {APIResponse, uid, viewTypes, APIField, dataTypes} from '../types'
 import honestAPI from './honestAPI'
+import {APIResponse, uid, viewTypes, APIField, dataTypes} from '../types'
 import {endpointsKeys} from '../types'
 
 interface covidRecords {
@@ -33,13 +33,13 @@ export const description: string = `The COVID Tracking Project is a volunteer or
 export const source: string = `https://covidtracking.com`
 
 export class covidAPI extends honestAPI {
-    base_url: string
-    version: string
-    file_type: string
-    endpoints: any
-    endpointsKeys: Array<endpointsKeys>
-    activeEndpoint: string
-    src: string
+    protected readonly endpoints: any
+    protected activeEndpoint: string
+    readonly base_url: string
+    readonly version: string
+    readonly file_type: string
+    readonly endpointsKeys: Array<endpointsKeys>
+    readonly src: string
 
     constructor() {
         super()
@@ -49,10 +49,11 @@ export class covidAPI extends honestAPI {
         this.src = 'covid'
         this.endpoints = {
             currentStateData: this.currentStateData,
-            historicStateData: this.historicStateData,
             currentUSData: this.currentUSData,
+            historicStateData: this.historicStateData,
             historicUSData: this.historicUSData,
         }
+
         this.endpointsKeys = Object.keys(this.endpoints).map(key=>{
             return {
                 key,
@@ -64,7 +65,6 @@ export class covidAPI extends honestAPI {
     mapToSchema(data: any) {
         const returned: APIResponse = {
             title: "COVID-19",
-            viewType: viewTypes.timeBased,
             description,
             source,
             records: data.map((d: covidRecords) => {
@@ -74,7 +74,7 @@ export class covidAPI extends honestAPI {
                         value: d.state
                     },
                     positive: {
-                        viewType: viewTypes.timeBased,
+                        viewType: viewTypes.timeSeries,
                         value: d.positive
                     },
                     dataQualityGrade: {
@@ -161,7 +161,8 @@ export class covidAPI extends honestAPI {
     async currentStateData(){
         const res = await this.send(
             this.buildURL('states/current', 'currentStateData'), 
-            this.mapToSchema
+            this.mapToSchema,
+            viewTypes.timeSeries
         )
         return res
     }
@@ -170,7 +171,8 @@ export class covidAPI extends honestAPI {
         this.activeEndpoint = 'historicStateData'
         const res = await this.send(
             this.buildURL('states/daily', 'historicStateData'),
-            this.mapToSchema
+            this.mapToSchema,
+            viewTypes.categorized
         )
         return res
     }
@@ -179,7 +181,8 @@ export class covidAPI extends honestAPI {
         this.activeEndpoint = 'currentUSData'
         const res = await this.send(
             this.buildURL('us/current', 'currentUSData'),
-            this.mapToSchema
+            this.mapToSchema,
+            viewTypes.timeSeries
         )
         return res
     }
@@ -188,7 +191,8 @@ export class covidAPI extends honestAPI {
         this.activeEndpoint = 'historicUSData'
         const res = await this.send(
             this.buildURL('us/daily', 'historicUSData'),
-            this.mapToSchema
+            this.mapToSchema,
+            viewTypes.categorized
         )
         return res
     }

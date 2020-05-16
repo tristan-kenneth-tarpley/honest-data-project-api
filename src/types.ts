@@ -7,13 +7,12 @@ export interface record {
 }
 
 export enum viewTypes {
-    timeBased, snapshotBased
+    timeSeries, categorized
 }
 
 export interface APIResponse {
     endpoints?: Array<endpointsKeys>
     title: string
-    viewType: viewTypes // see viewTypes enum
     source: string
     records: Array<record>
     description: string
@@ -21,13 +20,6 @@ export interface APIResponse {
 }
 
 
-
-export enum charts {
-    bar, pie, treeMap,
-    scatterPlot, waterfall, line,
-    dualAxisLine, bullet, bubbleChart,
-    area, stacked
-}
 export enum dataTypes {
     location, score, dateTime, metricLowIsGood, metricLowIsBad
 }
