@@ -104,7 +104,7 @@ export class covidAPI extends honestAPI {
         const res = await this.send(
             this.buildURL('states/current', 'currentStateData'), 
             this.mapToSchema,
-            viewTypes.timeSeries
+            viewTypes.categorized
         )
         return res
     }
@@ -114,7 +114,7 @@ export class covidAPI extends honestAPI {
         const res = await this.send(
             this.buildURL('states/daily', 'historicStateData'),
             this.mapToSchema,
-            viewTypes.categorized
+            viewTypes.timeSeries
         )
         return res
     }
@@ -124,7 +124,7 @@ export class covidAPI extends honestAPI {
         const res = await this.send(
             this.buildURL('us/current', 'currentUSData'),
             this.mapToSchema,
-            viewTypes.timeSeries
+            viewTypes.categorized
         )
         return res
     }
@@ -134,7 +134,7 @@ export class covidAPI extends honestAPI {
         const res = await this.send(
             this.buildURL('us/daily', 'historicUSData'),
             this.mapToSchema,
-            viewTypes.categorized
+            viewTypes.timeSeries
         )
         return res
     }
