@@ -48,9 +48,9 @@ export class covidAPI extends honestAPI {
         this.file_type = '.json'
         this.src = 'covid'
         this.endpoints = {
-            currentStateData: this.currentStateData,
-            currentUSData: this.currentUSData,
-            historicStateData: this.historicStateData,
+            // currentStateData: this.currentStateData,
+            // currentUSData: this.currentUSData,
+            // historicStateData: this.historicStateData,
             historicUSData: this.historicUSData,
         }
 
