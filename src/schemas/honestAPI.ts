@@ -37,7 +37,6 @@ export default class honestAPI {
                 active: key.key === this.activeEndpoint ? true : false
             }
         })
-
         return mapped
     }
 }

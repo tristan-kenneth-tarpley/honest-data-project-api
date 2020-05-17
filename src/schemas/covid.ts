@@ -63,90 +63,32 @@ export class covidAPI extends honestAPI {
     }
 
     mapToSchema(data: any) {
+        const nonviewableKeys: Array<string> = [
+            'hash', 'positiveScore', 'negativeScore', 'notes', 'dateChecked',
+            'negativeRegularScore', 'commercialScore', 'score', 'grade', 'total'
+        ]
+        const parseDate = (dateInt) => {
+            let date = (dateInt).toString()
+            const year = parseInt(date.slice(0,4))
+            const month = parseInt(date.substring(4, 6)) - 1
+            const day = date.slice(6, 8)
+            return new Date(year, month, day).toLocaleDateString()
+        }
         const returned: APIResponse = {
             title: "COVID-19",
             description,
             source,
-            records: data.map((d: covidRecords) => {
-                return {
-                    state: {
-                        dataType: dataTypes.location,
-                        value: d.state
-                    },
-                    positive: {
-                        viewType: viewTypes.timeSeries,
-                        value: d.positive
-                    },
-                    dataQualityGrade: {
-                        dataType: dataTypes.location,
-                        value: d.dataQualityGrade
-                    },
-                    negative: {
-                        dataType: dataTypes.location,
-                        value: d.negative
-                    },
-                    pending: {
-                        dataType: dataTypes.location,
-                        value: d.pending
-                    },
-                    hospitalizedCurrently: {
-                        dataType: dataTypes.location,
-                        value: d.hospitalizedCurrently
-                    },
-                    hospitalizedCumulative: {
-                        dataType: dataTypes.location,
-                        value: d.hospitalizedCumulative
-                    },
-                    inIcuCurrently: {
-                        dataType: dataTypes.location,
-                        value: d.inIcuCurrently
-                    },
-                    inIcuCumulative: {
-                        dataType: dataTypes.location,
-                        value: d.inIcuCumulative
-                    },
-                    onVentilatorCurrently: {
-                        dataType: dataTypes.location,
-                        value: d.onVentilatorCurrently
-                    },
-                    onVentilatorCumulative: {
-                        dataType: dataTypes.location,
-                        value: d.onVentilatorCumulative
-                    },
-                    recovered: {
-                        dataType: dataTypes.location,
-                        value: d.recovered
-                    },
-                    dateLastUpdated: {
-                        dataType: dataTypes.location,
-                        value: d.lastUpdateEt
-                    },
-                    dateLastChecked: {
-                        dataType: dataTypes.location,
-                        value: d.checkTimeEt
-                    },
-                    death: {
-                        dataType: dataTypes.location,
-                        value: d.death
-                    },
-                    hospitalized: {
-                        dataType: dataTypes.location,
-                        value: d.hospitalized
-                    },
-                    totalTestResults: {
-                        dataType: dataTypes.location,
-                        value: d.totalTestResults
-                    },
-                    dateModified: {
-                        dataType: dataTypes.location,
-                        value: d.dateModified
-                    },
-                    date: {
-                        dataType: dataTypes.location,
-                        value: d.dateChecked
-                    },
-                    uid: d.hash
+            records: data.map((d: string) => {
+                const filteredKeys = Object.keys(d).filter(key => !nonviewableKeys.includes(key))
+                let empty = {}
+                for (let key of filteredKeys) {
+                    if (key === 'date') {
+                        empty = {...empty, [key]: parseDate(d[key])}
+                        continue
+                    }
+                    empty = {...empty, [key]: d[key]}
                 }
+                return empty
             })
         }
         
