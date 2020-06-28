@@ -1,6 +1,5 @@
 import express from 'express'
 import clients from './apiClients'
-import apiClients from './apiClients'
 
 export const cors = require('cors')
 export const app = express()
@@ -39,6 +38,16 @@ app.get('/status', cors(corsOptions), (req, res) => {
     })
 })
 
+app.get('/available_endpoints', cors(corsOptions), (req, res) => {
+    const _clients = Object.keys(clients).map(c=>({
+        uid: clients[c].uid,
+        name: clients[c].name,
+        endpoint: clients[c].endpoint,
+        description: clients[c].description,
+        source: clients[c].source,
+    }));
+    res.status(200).json(_clients)
+})
 
 app.get('/src/:src', cors(corsOptions), async (req, res) => {
     try {
@@ -64,8 +73,8 @@ app.get('/src/:src', cors(corsOptions), async (req, res) => {
 
 app.get('/src/:src/:endpoint', cors(corsOptions), async (req, res) => {
     try {
-        const covid = new clients[req.params.src].api()
-        const _res = await covid.router(req.params.endpoint)
+        const api = new clients[req.params.src].api()
+        const _res = await api.router(req.params.endpoint)
         res.json(_res)
     } catch(e) {
         console.log(e)

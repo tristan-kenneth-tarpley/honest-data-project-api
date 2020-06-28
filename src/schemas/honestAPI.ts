@@ -14,7 +14,7 @@ export default class honestAPI {
             const res = await method() // fetching the data
             return res
         } catch (e) {
-            console.log(e)
+            console.error(e)
             return {
                 res: "error",
                 message: "Endpoint not found",

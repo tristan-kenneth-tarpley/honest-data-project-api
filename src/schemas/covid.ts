@@ -2,33 +2,6 @@ import honestAPI from './honestAPI'
 import {APIResponse, uid, viewTypes, APIField, dataTypes} from '../types'
 import {endpointsKeys} from '../types'
 
-interface covidRecords {
-    state: APIField
-    positive: APIField
-    score: APIField
-    notes: APIField
-    dataQualityGrade: APIField
-    negative: APIField
-    pending: APIField
-    hospitalizedCurrently: APIField
-    hospitalizedCumulative: APIField
-    inIcuCurrently: APIField
-    inIcuCumulative: APIField
-    onVentilatorCurrently: APIField
-    onVentilatorCumulative: APIField
-    recovered: APIField
-    lastUpdateEt: APIField
-    checkTimeEt: APIField
-    death: APIField
-    hospitalized: APIField
-    totalTestResults: APIField
-    posNeg: APIField
-    fips: APIField
-    dateModified: APIField
-    dateChecked: APIField
-    hash: uid
-}
-
 export const description: string = `The COVID Tracking Project is a volunteer organization launched from The Atlantic and dedicated to collecting and publishing the data required to understand the COVID-19 outbreak in the United States.`
 export const source: string = `https://covidtracking.com`
 
