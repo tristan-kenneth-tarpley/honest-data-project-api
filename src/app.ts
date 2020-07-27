@@ -6,27 +6,14 @@ export const cors = require("cors");
 export const app = express();
 const PORT = process.env.PORT || 5000;
 
-console.log(process.env.ENV);
-const whitelist: Array<string> = [
-  "http://127.0.0.1:5000/",
-  "http://127.0.0.1:5000",
-  "http://localhost:3000/",
-  "http://localhost:3000",
-  "https://honestdata.world/",
-  "https://honestdata.world",
-];
-
-const errorMessage: string = "It's not you, it's me...";
-
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin:
+    process.env.ENV === "staging"
+      ? "http://localhost:3000"
+      : "https://honestdata.world",
+  optionsSuccessStatus: 200,
 };
+const errorMessage: string = "It's not you, it's me...";
 
 app.get("/", cors(corsOptions), (req, res) => {
   res.status(403).json({
