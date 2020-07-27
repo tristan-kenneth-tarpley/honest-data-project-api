@@ -1,3 +1,4 @@
+require("dotenv").config();
 import express from "express";
 import clients from "./apiClients";
 
@@ -5,6 +6,7 @@ export const cors = require("cors");
 export const app = express();
 const PORT = process.env.PORT || 5000;
 
+console.log(process.env.ENV);
 const whitelist: Array<string> = [
   "http://127.0.0.1:5000/",
   "http://127.0.0.1:5000",
@@ -32,6 +34,10 @@ app.get("/", cors(corsOptions), (req, res) => {
     type: "Access forbidden",
     message: "Index route is unavailable",
   });
+});
+
+app.get("/environment", cors(corsOptions), (req, res) => {
+  res.status(200).send(`Environment: ${process.env.ENV}`);
 });
 
 app.get("/status", cors(corsOptions), (req, res) => {
