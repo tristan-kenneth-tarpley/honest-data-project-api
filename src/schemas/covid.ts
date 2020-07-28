@@ -84,41 +84,43 @@ export class covidAPI extends honestAPI {
   }
 
   async currentStateData() {
-    const res = await this.send(
-      this.buildURL("states/current", "currentStateData"),
-      this.mapToSchema,
-      viewTypes.categorized
-    );
+    const res = await this.send({
+      url: this.buildURL("states/current", "currentStateData"),
+      mapToSchema: this.mapToSchema,
+      viewType: viewTypes.categorized,
+      groupedBy: "state",
+    });
     return res;
   }
 
   async historicStateData() {
     this.activeEndpoint = "historicStateData";
-    const res = await this.send(
-      this.buildURL("states/daily", "historicStateData"),
-      this.mapToSchema,
-      viewTypes.timeSeries
-    );
+    const res = await this.send({
+      url: this.buildURL("states/daily", "historicStateData"),
+      mapToSchema: this.mapToSchema,
+      viewType: viewTypes.timeSeries,
+      groupedBy: "state",
+    });
     return res;
   }
 
   async currentUSData() {
     this.activeEndpoint = "currentUSData";
-    const res = await this.send(
-      this.buildURL("us/current", "currentUSData"),
-      this.mapToSchema,
-      viewTypes.categorized
-    );
+    const res = await this.send({
+      url: this.buildURL("us/current", "currentUSData"),
+      mapToSchema: this.mapToSchema,
+      viewType: viewTypes.categorized,
+    });
     return res;
   }
 
   async historicUSData() {
     this.activeEndpoint = "historicUSData";
-    const res = await this.send(
-      this.buildURL("us/daily", "historicUSData"),
-      this.mapToSchema,
-      viewTypes.timeSeries
-    );
+    const res = await this.send({
+      url: this.buildURL("us/daily", "historicUSData"),
+      mapToSchema: this.mapToSchema,
+      viewType: viewTypes.timeSeries,
+    });
     return res;
   }
 }

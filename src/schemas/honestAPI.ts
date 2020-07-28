@@ -23,11 +23,17 @@ export default class honestAPI {
     }
   }
 
-  async send(
-    url: string,
-    mapToSchema: (data: any) => APIResponse,
-    viewType: viewTypes
-  ) {
+  async send({
+    url,
+    mapToSchema,
+    viewType,
+    groupedBy,
+  }: {
+    url: string;
+    mapToSchema: (data: any) => APIResponse;
+    viewType: viewTypes;
+    groupedBy?: string;
+  }) {
     const res = await fetch(url);
     const json = await res.json();
     const mapped = mapToSchema(json);
@@ -35,6 +41,7 @@ export default class honestAPI {
     mapped["viewTypes"] = viewTypes;
     mapped["dataTypes"] = dataTypes;
     mapped["src"] = this.src;
+    if (groupedBy) mapped["groupedBy"] = groupedBy;
     mapped["endpoints"] = this.endpointsKeys.map((key) => {
       return {
         key: key.key,
