@@ -1,4 +1,4 @@
-import * as covid from "./schemas/covid";
+import * as covid from "./api-schemas/covid";
 import { v4 as uuidv4 } from "uuid";
 
 export default {

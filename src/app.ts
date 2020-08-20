@@ -4,7 +4,19 @@ import clients from "./apiClients";
 
 export const cors = require("cors");
 export const app = express();
+const db = require("./database/config/db");
 const PORT = process.env.PORT || 5000;
+
+const connectToDB = async () => {
+  try {
+    await db.authenticate();
+    console.log("Connection has been established successfully.");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
+};
+
+connectToDB();
 
 const corsOptions = {
   origin:
@@ -15,12 +27,12 @@ const corsOptions = {
 };
 const errorMessage: string = "It's not you, it's me...";
 
-app.get("/", cors(corsOptions), (req, res) => {
-  res.status(403).json({
-    error: 403,
-    type: "Access forbidden",
-    message: "Index route is unavailable",
-  });
+const test = require("./database/models/test");
+
+app.get("/", cors(corsOptions), async (req, res) => {
+  const newTest = await test.create({ name: "hello world!!!" });
+  console.log(newTest);
+  res.send("It's alive!");
 });
 
 app.get("/environment", cors(corsOptions), (req, res) => {
