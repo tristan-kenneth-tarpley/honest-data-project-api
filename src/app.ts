@@ -1,52 +1,32 @@
 require("dotenv").config();
-import express from "express";
+
+const express = require("express");
+const config = require("./config");
+export const app = express();
+
 import clients from "./apiClients";
 
-export const cors = require("cors");
-export const app = express();
-const db = require("./database/config/db");
+require("./models").connect(config.dbUri);
+
 const PORT = process.env.PORT || 5000;
+const { publicAuthCheck } = require("./middleware");
 
-const connectToDB = async () => {
-  try {
-    await db.authenticate();
-    console.log("Connection has been established successfully.");
-  } catch (error) {
-    console.error("Unable to connect to the database:", error);
-  }
-};
-
-connectToDB();
-
-const corsOptions = {
-  origin:
-    process.env.ENV === "staging"
-      ? "http://localhost:3000"
-      : "https://honestdata.world",
-  optionsSuccessStatus: 200,
-};
-const errorMessage: string = "It's not you, it's me...";
-
-const test = require("./database/models/test");
-
-app.get("/", cors(corsOptions), async (req, res) => {
-  const newTest = await test.create({ name: "hello world!!!" });
-  console.log(newTest);
-  res.send("It's alive!");
+app.get("/", publicAuthCheck(), async (req, res) => {
+  res.send("hello world");
 });
 
-app.get("/environment", cors(corsOptions), (req, res) => {
+app.get("/environment", publicAuthCheck(), (req, res) => {
   res.status(200).send(`Environment: ${process.env.ENV}`);
 });
 
-app.get("/status", cors(corsOptions), (req, res) => {
+app.get("/status", publicAuthCheck(), (req, res) => {
   res.status(200).json({
     status: 200,
     message: "You're all ready!",
   });
 });
 
-app.get("/available_endpoints", cors(corsOptions), (req, res) => {
+app.get("/available_endpoints", publicAuthCheck(), (req, res) => {
   const _clients = Object.keys(clients).map((c) => ({
     uid: clients[c].uid,
     name: clients[c].name,
@@ -57,39 +37,7 @@ app.get("/available_endpoints", cors(corsOptions), (req, res) => {
   res.status(200).json(_clients);
 });
 
-app.get("/src/:src", cors(corsOptions), async (req, res) => {
-  try {
-    const api = new clients[req.params.src].api();
-    const _res = await api.router(api.endpointsKeys[0].key);
-    res.json(_res);
-  } catch (e) {
-    console.log(e);
-    if (e instanceof TypeError) {
-      res.status(404).json({
-        response: 404,
-        errorMessage: "Data source not found",
-      });
-    } else {
-      res.status(500).json({
-        response: 500,
-        errorMessage,
-      });
-    }
-  }
-});
-
-app.get("/src/:src/:endpoint", cors(corsOptions), async (req, res) => {
-  try {
-    const api = new clients[req.params.src].api();
-    const _res = await api.router(req.params.endpoint);
-    res.json(_res);
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({
-      response: 500,
-      errorMessage,
-    });
-  }
-});
+app.use("/src", publicAuthCheck());
+app.use("/src", require("./routes/publicSrcRoutes"));
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
